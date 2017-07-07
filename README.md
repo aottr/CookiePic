@@ -1,6 +1,6 @@
 # SessionPicture
     
-    Easy Cookie-Based Picture-Handler for Avatars, Signatures and other stuff
+Easy Cookie-Based Picture-Handler for Avatars, Signatures and other stuff
 
 ## TODO
  - scan User-File for multiple Entries
