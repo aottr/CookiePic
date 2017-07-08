@@ -3,7 +3,7 @@
 	require_once "include/configuration.php";
 
 	if(!isset($_COOKIE["ID"]))
-		$img_path = "img/staubi_default.png";
+		$img_path = "img/" . $_GET['user'] . "/default.png";
 	else
 		$img_path = file_get_contents("data/" . $_COOKIE["ID"]);
 

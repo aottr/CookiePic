@@ -1,6 +1,7 @@
 <?php
 	
 	require_once "include/configuration.php";
+	require_once "include/UserModel.php";
 
 	// Error Handling
 	if(!DEBUG)
@@ -14,28 +15,53 @@
 		die;
 	}
 
-	$hash = generateHash();
+	
+	if(!isset($_GET['hash'])) {
+
+		echo "No supported hash.";
+		die;
+	}
+
+	// check key
+
+	$assc = json_decode(file_get_contents("test.txt"), true);
+
+	$user = NULL;
+
+	foreach ($assc as $userm) {
+
+		$userm = (object)$userm;
+		if($userm->Hash == $_GET['hash'])
+			$user = $userm;
+	}
+
+	if($user == NULL) {
+
+		echo "User does'nt exist.";
+		die;
+	}
+
+	if($user->Active == TRUE) {
+
+		echo "User already active.";
+		die;
+	}
+
+	$user->Active = TRUE;
+
+	// save Users
+	file_put_contents ("test.txt", json_encode (array_replace($assc, [ $user->ID => $user ])));
 
 	$generated = setcookie
 	(	
 		"ID", 
-		$hash, 
+		$user->ID, 
 		COOKIE_LIFETIME, 
 		COOKIE_PATH,
 		COOKIE_DOMAIN,
 		COOKIE_SECURE,
 		COOKIE_HTTPONLY
 	);
-
-	function generateHash() {
-
-		return md5(srand((double) microtime() * 1000000));
-	}
-	
-	//file_put_contents (USR_IMG_DATA . $hash, DEFAULT_PIC); doesnt work for unknown reason
-
-	if($generated)
-		$generated = file_put_contents ("data/" . $hash, DEFAULT_PIC) === FALSE ? FALSE : TRUE;
 
 	if($generated)
 
