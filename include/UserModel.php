@@ -7,12 +7,13 @@ class UserModel {
 	public $Hash;
 	public $Active;
 
-	function __construct($uID, $uName, $uHash) {
+	function __construct($user_assoc, $active = FALSE) {
 
-		$this->ID = $uID;
-		$this->Name = $uName;
-		$this->Hash = $uHash;
-		$this->Active = FALSE;
+
+		$this->ID = $user_assoc['ID'];
+		$this->Name = $user_assoc['Name'];
+		$this->Hash = $user_assoc['Hash'];
+		$this->Active = $active;	
 	}
 
 	public function getID() { return $this->ID; }

@@ -2,6 +2,7 @@
 	
 	require_once "include/configuration.php";
 	require_once "include/UserModel.php";
+	require_once "include/helper.php";
 
 	// Error Handling
 	if(!DEBUG)
@@ -22,40 +23,17 @@
 		die;
 	}
 
-	// check key
+	// validate user by hash -> helper
 
-	$assc = json_decode(file_get_contents("test.txt"), true);
+	$user = validateUser($_GET['hash']);
 
-	$user = NULL;
-
-	foreach ($assc as $userm) {
-
-		$userm = (object)$userm;
-		if($userm->Hash == $_GET['hash'])
-			$user = $userm;
-	}
-
-	if($user == NULL) {
-
-		echo "User does'nt exist.";
+	if($usern === FALSE)
 		die;
-	}
-
-	if($user->Active == TRUE) {
-
-		echo "User already active.";
-		die;
-	}
-
-	$user->Active = TRUE;
-
-	// save Users
-	file_put_contents ("test.txt", json_encode (array_replace($assc, [ $user->ID => $user ])));
 
 	$generated = setcookie
 	(	
 		"ID", 
-		$user->ID, 
+		$user, 
 		COOKIE_LIFETIME, 
 		COOKIE_PATH,
 		COOKIE_DOMAIN,
@@ -63,8 +41,14 @@
 		COOKIE_HTTPONLY
 	);
 
-	if($generated)
+	if($generated) {
 
-		echo "User successfully generated.";
-	else
-		echo "User could not be generated.";
+		$view = new View('success');
+		$view->set("message", "User successfully generated.");
+		$view->render();
+	}
+	else {
+		$view = new View('error');
+		$view->set("message", "User could not be generated.");
+		$view->render();
+	}

@@ -2,7 +2,7 @@
 	
 	date_default_timezone_set('Europe/Berlin');
 	
-	define('DEBUG',				true);
+	define('DEBUG',				1);
 
 	/**
 	 *	Cookie Settings
@@ -13,7 +13,8 @@
 	define('COOKIE_SECURE',		false);
 	define('COOKIE_HTTPONLY', 	true);
 
-	define('ROOT_DIR',			'/');
+	//define('ROOT_DIR',			'');
 	define('USR_IMG_DATA',		'data/');
 	define('IMG_DIR', 			'img/');
+	define('USR_DATA', 			USR_IMG_DATA . 'userdata.json'); 
 	define('DEFAULT_PIC',		IMG_DIR . 'default.png');
